@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.prologik.tanksgame.model.Tank;
 
 public class GameScreen implements Screen {
 
   private SpriteBatch batch;
-  private Texture texture;
+  private TextureAtlas textureAtlas;
   private Tank tank;
   private OrthographicCamera camera;
   public static float deltaCff;
@@ -19,9 +20,7 @@ public class GameScreen implements Screen {
   @Override
   public void show() {
     batch = new SpriteBatch();
-    texture = new Texture("sprites.png");
-    texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    tank = new Tank(texture, -1f, -3f, 2f, 2f);
+    tank = new Tank(textureAtlas.findRegion("tank1",0), -1f, -3f, 2f, 2f);
   }
 
   @Override
@@ -35,6 +34,10 @@ public class GameScreen implements Screen {
     batch.begin();
     tank.draw(batch);
     batch.end();
+  }
+
+  public void setTextureAtlas(TextureAtlas textureAtlas) {
+    this.textureAtlas = textureAtlas;
   }
 
   @Override
@@ -60,7 +63,7 @@ public class GameScreen implements Screen {
 
   @Override
   public void dispose() {
-    texture.dispose();
+    textureAtlas.dispose();
     batch.dispose();
   }
 }

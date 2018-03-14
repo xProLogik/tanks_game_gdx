@@ -1,14 +1,14 @@
 package com.prologik.tanksgame.model;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.prologik.tanksgame.control.TankContoller;
 
 public class Tank extends GameObject {
 
   private TankContoller tankContoller;
-  public Tank(Texture texture, float x, float y, float width, float height) {
-    super(texture, x, y, width, height);
+  public Tank(TextureRegion textureRegion, float x, float y, float width, float height) {
+    super(textureRegion, x, y, width, height);
     tankContoller = new TankContoller(bounds);
   }
 
