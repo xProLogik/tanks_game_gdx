@@ -15,7 +15,7 @@ public class MainGame extends Game {
   public void create() {
     assets = new Assets();
     gameScreen = new GameScreen();
-    ((GameScreen)gameScreen).setTextureAtlas(assets.getManager().get("MyAtlas.atlas", TextureAtlas.class));
+    GameScreen.textureAtlas = (assets.getManager().get("MyAtlas.atlas", TextureAtlas.class));
     setScreen(gameScreen);
   }
 
@@ -25,4 +25,5 @@ public class MainGame extends Game {
     gameScreen.dispose();
     assets.dispose();
   }
+
 }

@@ -7,12 +7,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.prologik.tanksgame.MainGame;
+import com.prologik.tanksgame.control.Heading;
+import com.prologik.tanksgame.model.Bullet;
 import com.prologik.tanksgame.model.Tank;
 
 public class GameScreen implements Screen {
 
-  private SpriteBatch batch;
-  private TextureAtlas textureAtlas;
+  public static SpriteBatch batch;
+  public static TextureAtlas textureAtlas;
   private Tank tank;
   private OrthographicCamera camera;
   public static float deltaCff;
@@ -25,19 +28,14 @@ public class GameScreen implements Screen {
 
   @Override
   public void render(float delta) {
-    Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+    Gdx.gl.glClearColor(0f, 0f, 0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
     deltaCff = delta;
 
     batch.setProjectionMatrix(camera.combined);
     batch.begin();
     tank.draw(batch);
     batch.end();
-  }
-
-  public void setTextureAtlas(TextureAtlas textureAtlas) {
-    this.textureAtlas = textureAtlas;
   }
 
   @Override
