@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Polygon;
-import com.prologik.tanksgame.control.Heading;
 
-abstract class GameObject {
+public abstract class GameObject {
 
   Polygon bounds;
   private Sprite object;
   private float width;
   private float height;
+
 
   GameObject(TextureRegion textureRegion, float x, float y, float width, float height) {
     bounds = new Polygon(new float[]{0f, 0f, width, 0f, width, height, 0f, height});
@@ -44,4 +44,5 @@ abstract class GameObject {
   public float getHeight() {
     return height;
   }
+
 }

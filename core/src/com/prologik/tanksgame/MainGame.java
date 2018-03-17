@@ -2,6 +2,7 @@ package com.prologik.tanksgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.prologik.tanksgame.utils.Assets;
 import com.prologik.tanksgame.view.GameScreen;
@@ -15,7 +16,6 @@ public class MainGame extends Game {
   public void create() {
     assets = new Assets();
     gameScreen = new GameScreen();
-    GameScreen.textureAtlas = (assets.getManager().get("MyAtlas.atlas", TextureAtlas.class));
     setScreen(gameScreen);
   }
 
