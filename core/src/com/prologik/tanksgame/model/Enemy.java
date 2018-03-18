@@ -6,20 +6,20 @@ import com.prologik.tanksgame.control.Heading;
 
 public class Enemy {
 
-  private Tank tank;
-  private int random;
-
-  Enemy(TextureAtlas textureAtlas) {
-    tank = new Tank(textureAtlas.findRegion("tank6", 0), -1f, -3f, 2f, 2f);
-  }
-
-  public void draw(SpriteBatch batch) {
-    tank.draw(batch);
-  }
-
-  public void update(float delta) {
-      tank.moveLeft(delta);
-  }
+//  private Tank tank;
+//  private int random;
+//
+//  Enemy(TextureAtlas textureAtlas) {
+//    tank = new Tank(textureAtlas.findRegion("tank6", 0), -1f, -3f, 2f, 2f);
+//  }
+//
+//  public void draw(SpriteBatch batch) {
+//    tank.draw(batch);
+//  }
+//
+//  public void update(float delta) {
+//      tank.moveLeft(delta);
+//  }
 
 //  private void randomMovement(float delta) {
 //    random = (int) (Math.random() * 100);

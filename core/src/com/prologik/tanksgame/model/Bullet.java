@@ -2,12 +2,18 @@ package com.prologik.tanksgame.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.prologik.tanksgame.control.Heading;
+import com.badlogic.gdx.math.Vector2;
 
-public class Bullet extends GameObject{
+public class Bullet extends MovableObject{
 
-  public Bullet(TextureRegion textureRegion,Heading head, float x, float y, float width, float height) {
-    super(textureRegion, x, y, width, height);
+
+  Bullet(TextureRegion textureRegion, Vector2 position, float width, float height, Vector2 direction) {
+    super(textureRegion, position, width, height, direction, 15f);
+  }
+
+  @Override
+  public void update(float delta) {
+    super.update(delta);
   }
 
   @Override

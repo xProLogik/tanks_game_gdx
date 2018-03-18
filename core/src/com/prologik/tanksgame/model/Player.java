@@ -10,13 +10,13 @@ public class Player{
   private PlayerContoller contoller;
 
   Player(TextureAtlas textureAtlas){
-    tank = new Tank(textureAtlas.findRegion("tank1",0),-4f,-13f,2f,2f);
+ //   tank = new Tank(textureAtlas.findRegion("tank1",0),-4f,-13f,2f,2f);
     contoller = new PlayerContoller(tank);
   }
-  public void draw(SpriteBatch batch){
-    tank.draw(batch);
-
-  }
+//  public void draw(SpriteBatch batch){
+//    tank.draw(batch);
+//
+//  }
   public void update(float delta){
     contoller.handle(delta);
   }
