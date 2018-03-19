@@ -2,13 +2,8 @@ package com.prologik.tanksgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.prologik.tanksgame.utils.Assets;
 import com.prologik.tanksgame.view.AbstractScreen;
-import com.prologik.tanksgame.view.GameScreen;
 import com.prologik.tanksgame.view.ScreenManager;
 import com.prologik.tanksgame.view.Screens;
 
