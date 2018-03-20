@@ -11,6 +11,8 @@ import com.prologik.tanksgame.utils.Utils;
 import com.prologik.tanksgame.view.GameScreen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameWorld implements Disposable {
 
@@ -29,6 +31,7 @@ public class GameWorld implements Disposable {
   private ArrayList<Box> boxes = new ArrayList<>();
   private ArrayList<Box> removedBoxes = new ArrayList<>();
 
+  private Map<String, Enemy> bufferedEnemies = new HashMap<>();
   private Array<Enemy> enemies = new Array<>();
   private Array<Enemy> removedEnemies = new Array<>();
 
@@ -45,6 +48,7 @@ public class GameWorld implements Disposable {
     player = new Player("tank1", new Vector2(0 - 4 * SPRITE_SIZE, PLAYFIELD_MIN_Y),
         2 * SPRITE_SIZE, 2 * SPRITE_SIZE, new Vector2(0f, 1f));
     generatePlaylevel();
+
   }
 
   private void generatePlaylevel() {
