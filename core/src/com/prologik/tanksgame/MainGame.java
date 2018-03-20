@@ -22,6 +22,11 @@ public class MainGame extends Game {
     ScreenManager.getInstance().dispose();
   }
 
+  @Override
+  public void resize(int width, int height) {
+    super.resize(width, height);
+  }
+
   public void render() {
     AbstractScreen screen = getScreen();
 
@@ -35,21 +40,5 @@ public class MainGame extends Game {
     return (AbstractScreen) super.getScreen();
   }
 
-//  private Assets assets;
-//  private Screen gameScreen;
-//
-//  @Override
-//  public void create() {
-//    assets = new Assets();
-//    gameScreen = new GameScreen();
-//    setScreen(gameScreen);
-//  }
-//
-//  @Override
-//  public void dispose() {
-//    super.dispose();
-//    gameScreen.dispose();
-//    assets.dispose();
-//  }
 
 }

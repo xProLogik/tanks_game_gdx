@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-public class Tank extends MovableObject {
+public abstract class Tank extends MovableObject {
 
   Array<Bullet> bullets = new Array<>();
   Array<Bullet> removedBullets = new Array<>();
@@ -29,10 +29,10 @@ public class Tank extends MovableObject {
 
 
   public void shot() {
-    Vector2 direction = new Vector2(this.getDirection());
+    Vector2 direction = new Vector2(this.direction);
     if (bullets.size<10) {
-      Bullet newBullet = new Bullet("bullet_top", new Vector2(this.getBounds().getX() + 0.5f,
-          this.getBounds().getY() + 0.5f), 1f, 1f, direction);
+      Bullet newBullet = new Bullet("bullet_top", new Vector2(this.getBounds().getX() + GameWorld.SPRITE_SIZE/2,
+          this.getBounds().getY() + GameWorld.SPRITE_SIZE/2), GameWorld.SPRITE_SIZE, GameWorld.SPRITE_SIZE, direction);
       bullets.add(newBullet);
     }
   }

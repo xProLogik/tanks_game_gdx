@@ -49,9 +49,6 @@ public class PlayerContoller {
     if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
       player.shot();
     }
-
-
-   // player.update(delta);
   }
 }
 

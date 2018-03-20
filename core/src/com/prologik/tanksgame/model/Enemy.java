@@ -8,11 +8,11 @@ public class Enemy  extends Tank{
   private int random;
 
   Enemy(String nameRegion, Vector2 position, float width, float height, Vector2 direction) {
-    super(nameRegion, position, width, height, direction, 10f);
+    super(nameRegion, position, width, height, direction, 10f*GameWorld.SPRITE_SIZE);
   }
 
 
-  private void randomMove() {
+  void randomMove() {
     random = (int)(Math.random() * 100);
     switch(currentFacing){
       case RIGHT:

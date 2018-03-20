@@ -1,9 +1,9 @@
 package com.prologik.tanksgame.model;
 
-import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class MovableObject extends GameObject {
+public abstract class MovableObject extends GameObject {
 
   static final int LEFT = 90;
   static final int RIGHT = -90;
@@ -26,9 +26,9 @@ public class MovableObject extends GameObject {
 
   public void update(float delta) {
     if (isCanMove()) {
-      this.getBounds().setPosition(this.position.x, this.position.y);
+      this.getObject().setPosition(this.position.x, this.position.y);
     }
-    this.getBounds().setRotation(currentFacing);
+    this.getObject().setRotation(currentFacing);
   }
 
   void recalculateRotationAngle(Vector2 direction) {
@@ -40,10 +40,6 @@ public class MovableObject extends GameObject {
       currentFacing = UP;
     else if (direction.y < 0.0f)
       currentFacing = DOWN;
-  }
-
-  Vector2 getDirection() {
-    return direction;
   }
 
   void setDirection(Vector2 direction) {
@@ -75,28 +71,23 @@ public class MovableObject extends GameObject {
   public boolean isLeftTheField() {
     return ((GameWorld.PLAYFIELD_MIN_Y > this.position.y) ||
         (GameWorld.PLAYFIELD_MIN_X > this.position.x) ||
-        (GameWorld.PLAYFIELD_MAX_X < this.position.x + this.getBounds().getBoundingRectangle().getWidth()) ||
-        (GameWorld.PLAYFIELD_MAX_Y < this.position.y + this.getBounds().getBoundingRectangle().getHeight()));
+        (GameWorld.PLAYFIELD_MAX_X < this.position.x + this.getBounds().getWidth()) ||
+        (GameWorld.PLAYFIELD_MAX_Y < this.position.y + this.getBounds().getHeight()));
   }
 
 
   boolean collide(GameObject obj) {
-    Polygon bounds = obj.getBounds();
-    return ((this.position.x < bounds.getX() + bounds.getBoundingRectangle().getWidth()) &&
-        (bounds.getX() < this.position.x + this.getBounds().getBoundingRectangle().getWidth()) &&
-        (this.position.y < bounds.getY() + bounds.getBoundingRectangle().getHeight()) &&
-        (bounds.getY() < this.position.y + this.getBounds().getBoundingRectangle().getHeight()));
+    Rectangle bounds = obj.getBounds();
+    return ((this.position.x < bounds.getX() + bounds.getWidth()) &&
+        (bounds.getX() < this.position.x + this.getBounds().getWidth()) &&
+        (this.position.y < bounds.getY() + bounds.getHeight()) &&
+        (bounds.getY() < this.position.y + this.getBounds().getHeight()));
   }
 
   boolean collide(Box box) {
-    Polygon bounds = box.getBounds();
     return ((box.getBoxType().equals(BoxType.BRICS) ||
         box.getBoxType().equals(BoxType.STONE) ||
-        box.getBoxType().equals(BoxType.WATER))) &&
-        ((this.position.x < bounds.getX() + bounds.getBoundingRectangle().getWidth()) &&
-        (bounds.getX() < this.position.x + this.getBounds().getBoundingRectangle().getWidth()) &&
-        (this.position.y < bounds.getY() + bounds.getBoundingRectangle().getHeight()) &&
-        (bounds.getY() < this.position.y + this.getBounds().getBoundingRectangle().getHeight()));
+        box.getBoxType().equals(BoxType.WATER))) && this.collide((GameObject) box);
   }
 
   void lastPosition() {

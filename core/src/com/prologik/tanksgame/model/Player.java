@@ -9,7 +9,7 @@ public class Player extends Tank{
   private PlayerContoller contoller;
 
   Player(String nameRegion, Vector2 position, float width, float height, Vector2 direction) {
-    super(nameRegion, position, width, height, direction,10f);
+    super(nameRegion, position, width, height, direction,10f*GameWorld.SPRITE_SIZE);
     contoller = new PlayerContoller(this);
   }
 

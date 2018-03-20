@@ -24,6 +24,12 @@ public class GameScreen extends AbstractScreen {
   }
 
   @Override
+  public void resize(int width, int height) {
+    super.resize(width, height);
+    renderer.resize(width,height);
+  }
+
+  @Override
   public void update(float delta) {
     world.update(delta);
   }
