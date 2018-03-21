@@ -32,7 +32,7 @@ public class MainGame extends Game {
 
     screen.render(Gdx.graphics.getDeltaTime());
 
-    fpsLogger.log();
+    //fpsLogger.log();
   }
 
   @Override

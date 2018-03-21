@@ -9,6 +9,7 @@ public class GameScreen extends AbstractScreen {
 
   private final GameWorld world;
   private final WorldRenderer renderer;
+  private float runTime = 0;
 
   private boolean isDone = false;
 
@@ -31,13 +32,15 @@ public class GameScreen extends AbstractScreen {
 
   @Override
   public void update(float delta) {
-    world.update(delta);
+    runTime+=delta;
+    world.update(delta,runTime);
   }
 
   @Override
   public void draw(float delta) {
-    renderer.render(world, delta);
+    renderer.render(world);
   }
+
 
   @Override
   public boolean isDone() {

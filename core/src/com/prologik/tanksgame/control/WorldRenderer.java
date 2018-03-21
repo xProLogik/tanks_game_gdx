@@ -13,24 +13,24 @@ import com.prologik.tanksgame.model.GameWorld;
 public class WorldRenderer implements Disposable {
 
   public static float CAM_HEIGHT = 26f;
-  public static float CAM_WIDTH = 36f;
+  private static float CAM_WIDTH = 36f;
+
   private Viewport viewport;
   private SpriteBatch batcher;
   private OrthographicCamera camera;
 
   public WorldRenderer() {
-    float aspectRatio = CAM_WIDTH/CAM_HEIGHT;
+    float aspectRatio = CAM_WIDTH / CAM_HEIGHT;
     camera = new OrthographicCamera(CAM_WIDTH, CAM_HEIGHT);
-    viewport = new FitViewport(600*aspectRatio, 600, camera);
+    viewport = new FitViewport(600 * aspectRatio, 600, camera);
     batcher = new SpriteBatch();
     batcher.setProjectionMatrix(camera.combined);
   }
 
 
-  public void render(GameWorld world, float delta) {
+  public void render(GameWorld world) {
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
     batcher.begin();
     world.draw(batcher);
     batcher.end();

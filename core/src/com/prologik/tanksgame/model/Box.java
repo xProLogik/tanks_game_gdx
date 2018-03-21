@@ -5,10 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 
 class Box extends GameObject {
 
-  private final BoxType boxType;
+
+
+  private BoxType boxType;
 
   Box(BoxType boxType, Vector2 position, float width, float height) {
-    super(boxType.name().toLowerCase(), position, width, height);
+    super(boxType.name().toLowerCase(),0, position, width, height);
     this.boxType = boxType;
   }
 
@@ -16,12 +18,16 @@ class Box extends GameObject {
     return boxType;
   }
 
+  void setBoxType(BoxType boxType) {
+    this.boxType = boxType;
+  }
+
   @Override
   public void draw(SpriteBatch batch) {
     super.draw(batch);
   }
 
-  public boolean changeBox(Vector2 direction) {
+  boolean changeBox(Vector2 direction) {
     boolean result = false;
     int x = 0, y = 0, width = this.getObject().getRegionWidth(), height = this.getObject().getRegionHeight();
     float changeX = 0, changeY = 0, changeWidth = 0, changeHeight = 0;

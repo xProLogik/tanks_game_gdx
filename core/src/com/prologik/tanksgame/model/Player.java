@@ -6,17 +6,27 @@ import com.prologik.tanksgame.control.PlayerContoller;
 
 public class Player extends Tank{
 
+  private TankLevel tankLevel;
   private PlayerContoller contoller;
 
-  Player(String nameRegion, Vector2 position, float width, float height, Vector2 direction) {
-    super(nameRegion, position, width, height, direction,10f*GameWorld.SPRITE_SIZE);
+  Player(TankLevel tankLevel, Vector2 position, float width, float height, Vector2 direction) {
+    super(tankLevel.getNameRegion(), position, width, height, direction,10f*GameWorld.SPRITE_SIZE);
     contoller = new PlayerContoller(this);
+    this.tankLevel = tankLevel;
   }
 
 
   public void move(float delta, Vector2 moveDirection) {
     this.setDirection(moveDirection);
     super.move(delta);
+  }
+
+  TankLevel getTankLevel() {
+    return tankLevel;
+  }
+
+  void setTankLevel(TankLevel tankLevel) {
+    this.tankLevel = tankLevel;
   }
 
   @Override

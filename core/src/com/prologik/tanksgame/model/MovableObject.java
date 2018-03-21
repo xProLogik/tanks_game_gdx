@@ -16,7 +16,7 @@ public abstract class MovableObject extends GameObject {
   Vector2 position;
 
   MovableObject(String nameRegion, Vector2 position, float width, float height, Vector2 direction, float velosity) {
-    super(nameRegion, position, width, height);
+    super(nameRegion,0, position, width, height);
     this.direction = direction;
     this.velocity = velosity;
     this.position = position;
@@ -59,8 +59,9 @@ public abstract class MovableObject extends GameObject {
     if (isCanMove()) {
       this.position.x += delta * velocity * direction.x;
       this.position.y += delta * velocity * direction.y;
+      canMove = true;
     }
-    canMove = true;
+
     if (isLeftTheField()) this.leftTheField();
   }
 

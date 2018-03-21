@@ -1,5 +1,6 @@
 package com.prologik.tanksgame.model;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -8,11 +9,12 @@ import com.badlogic.gdx.utils.Disposable;
 import com.prologik.tanksgame.control.WorldController;
 import com.prologik.tanksgame.control.WorldRenderer;
 import com.prologik.tanksgame.utils.Utils;
-import com.prologik.tanksgame.view.GameScreen;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GameWorld implements Disposable {
 
@@ -28,12 +30,16 @@ public class GameWorld implements Disposable {
 
   private Player player;
 
+  private boolean clock_stop = false;
+  private float stopTime;
+  private float shovelTime;
   private ArrayList<Box> boxes = new ArrayList<>();
   private ArrayList<Box> removedBoxes = new ArrayList<>();
 
-  private Map<String, Enemy> bufferedEnemies = new HashMap<>();
+  private Array<String> bufferedEnemies = new Array<>();
   private Array<Enemy> enemies = new Array<>();
   private Array<Enemy> removedEnemies = new Array<>();
+  private Bonus bonus;
 
   private WorldController contoller;
 
@@ -45,13 +51,31 @@ public class GameWorld implements Disposable {
 
   private void loadLevel() {
 
-    player = new Player("tank1", new Vector2(0 - 4 * SPRITE_SIZE, PLAYFIELD_MIN_Y),
+    player = new Player(TankLevel.LEVEL1, new Vector2(0 - 4 * SPRITE_SIZE, PLAYFIELD_MIN_Y),
         2 * SPRITE_SIZE, 2 * SPRITE_SIZE, new Vector2(0f, 1f));
+    player.getObject().setColor(Color.GOLD);
+    player.setCanMove(true);
     generatePlaylevel();
+    generateEnemyForLevel();
+  }
 
+  private void generateEnemyForLevel() {
+    Map<String, Integer> enemyParser = Utils.enemyParser("level1.lvl");
+    Pattern p = Pattern.compile("[0-9]");
+    Matcher m;
+    for (Map.Entry<String, Integer> entry : enemyParser.entrySet()) {
+
+      m = p.matcher(entry.getKey());
+      String typeEnemy = "tank5";
+      if (m.find()) typeEnemy = "tank" + (Integer.parseInt(m.group()) + 4);
+      for (int i = 0; i < entry.getValue(); i++) {
+        bufferedEnemies.add(typeEnemy);
+      }
+    }
   }
 
   private void generatePlaylevel() {
+
     int[][] levelMap = Utils.levelParser("level1.lvl");
 
     for (int i = (int) PLAYFIELD_MIN_X; i < PLAYFIELD_MAX_X; i++)
@@ -64,21 +88,44 @@ public class GameWorld implements Disposable {
       }
   }
 
-  public void createEnemy() {
-    if (enemies.size < 50) {
+
+  public void generateEnemy() {
+    if (enemies.size < 5) {
       Enemy newEnemy = new Enemy("tank5", new Vector2(-5f, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE),
           2 * SPRITE_SIZE, 2 * SPRITE_SIZE, new Vector2(0f, -1f));
       enemies.add(newEnemy);
     }
   }
 
+  public void createEnemy() {
+    if (enemies.size < 5) {
+      Enemy newEnemy = new Enemy("tank5", new Vector2(-5f, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE),
+          2 * SPRITE_SIZE, 2 * SPRITE_SIZE, new Vector2(0f, -1f));
+      if (!clock_stop) newEnemy.setCanMove(true);
+      enemies.add(newEnemy);
+
+    }
+  }
+
+  private void createBonus() {
+    bonus = null;
+    int randomBonus = 5;// (int) Math.round(Math.random() * 5);
+    bonus = new Bonus("bonus", randomBonus, new Vector2(
+        (float) Math.random() * (PLAYFIELD_MAX_X - 2f * SPRITE_SIZE - PLAYFIELD_MIN_X) - PLAYFIELD_MAX_X,
+        (float) Math.random() * (PLAYFIELD_MAX_Y - 2f * SPRITE_SIZE - PLAYFIELD_MIN_Y) - PLAYFIELD_MAX_Y),
+        2 * SPRITE_SIZE, 2 * SPRITE_SIZE);
+  }
+
   public void draw(SpriteBatch batch) {
     player.draw(batch);
     for (Enemy enemy : enemies) enemy.draw(batch);
     for (Box box : boxes) box.draw(batch);
+    if (bonus != null)
+      bonus.draw(batch);
   }
 
-  public void update(float delta) {
+  public void update(float delta, float runTime) {
+    updateBonus(runTime);
     updateTanks();
     updateEnemies(delta);
     updateBlocks();
@@ -87,9 +134,41 @@ public class GameWorld implements Disposable {
       updateShots(delta, enemy);
       updateBullets(enemy);
     }
-    updatePlayer(delta);
+    updatePlayer(delta, runTime);
     contoller.update(delta);
   }
+
+  private void updateBonus(float runTime) {
+    if (runTime - shovelTime > 6) {
+      for (Box box : boxes)
+        if ((-2 * SPRITE_SIZE <= box.getObject().getX()) && (1 * SPRITE_SIZE >= box.getObject().getX()) &&
+            (-13 * SPRITE_SIZE <= box.getObject().getY()) && (-11 >= box.getObject().getY()) &&
+            (box.getBoxType().equals(BoxType.STONE))) box.blink(runTime);
+    }
+    if (runTime - shovelTime > 10) {
+      for (Box box : boxes)
+        if ((-2 * SPRITE_SIZE <= box.getObject().getX()) && (1 * SPRITE_SIZE >= box.getObject().getX()) &&
+            (-13 * SPRITE_SIZE <= box.getObject().getY()) && (-11 >= box.getObject().getY())) {
+          if (box.getBoxType().equals(BoxType.STONE))
+            removedBoxes.add(box);
+          if (box.getBoxType().equals(BoxType.WATER))
+            box.setBoxType(BoxType.BRICS);
+        }
+      boxes.removeAll(removedBoxes);
+      shovelTime = 0;
+    }
+    if ((clock_stop) && (runTime - stopTime > 7)) {
+      for (Enemy enemy : enemies)
+        enemy.blink(runTime);
+    }
+    if ((clock_stop) && (runTime - stopTime > 10)) {
+        clock_stop = false;
+        for (Enemy enemy : enemies)
+          enemy.getObject().setAlpha(1);
+    }
+    if (bonus != null) bonus.update(runTime);
+  }
+
 
   private void updateTanks() {
 
@@ -102,10 +181,12 @@ public class GameWorld implements Disposable {
           if (tankCollide.collide(tank)) {
             tankCollide.lastPosition();
             tank.lastPosition();
-            if (!tank.equals(player))
-              ((Enemy) tank).randomMove();
-            if (!tankCollide.equals(player))
-              ((Enemy) tankCollide).randomMove();
+            if (!clock_stop) {
+              if (!tank.equals(player))
+                ((Enemy) tank).randomMove();
+              if (!tankCollide.equals(player))
+                ((Enemy) tankCollide).randomMove();
+            }
           }
     }
   }
@@ -133,18 +214,21 @@ public class GameWorld implements Disposable {
   private void updateEnemies(float delta) {
     removedEnemies.clear();
     for (Enemy tankEnemy : enemies) {
-      tankEnemy.randomMovement();
-      tankEnemy.setCanMove(true);
+      if (!clock_stop) {
+        tankEnemy.randomMovement();
+        tankEnemy.setCanMove(true);
+      }
       tankEnemy.move(delta);
 
       for (Box box : boxes) {
         if (tankEnemy.collide(box)) {
-          tankEnemy.randomMove();
+          if (!clock_stop) tankEnemy.randomMove();
           tankEnemy.lastPosition();
         }
       }
       for (Bullet bullet : player.bullets) {
         if (bullet.collide(tankEnemy)) {
+          createBonus();
           removedEnemies.add(tankEnemy);
           player.removedBullets.add(bullet);
           player.bullets.removeAll(player.removedBullets, false);
@@ -160,11 +244,52 @@ public class GameWorld implements Disposable {
     removedBoxes.clear();
   }
 
-  private void updatePlayer(float delta) {
+  private void updatePlayer(float delta, float runTime) {
     for (Box box : boxes) {
       if (player.collide(box)) {
         player.lastPosition();
       }
+    }
+    if ((bonus != null) && (player.collide(bonus))) {
+      switch (bonus.getBonusType()) {
+        case HELMET:
+          break;
+        case EXTRA_LIFE:
+          break;
+        case GRENADE:
+          for (Enemy enemy : enemies) {
+            removedEnemies.add(enemy);
+          }
+          enemies.removeAll(removedEnemies, false);
+          break;
+        case SHOVEL:
+          ArrayList<Box> stoneBoxes = new ArrayList<>();
+          for (Box box : boxes)
+            if ((-2 * SPRITE_SIZE <= box.getObject().getX()) && (1 * SPRITE_SIZE >= box.getObject().getX()) &&
+                (-13 * SPRITE_SIZE <= box.getObject().getY()) && (-11 >= box.getObject().getY()) &&
+                (box.getBoxType().equals(BoxType.BRICS))) {
+              box.setBoxType(BoxType.WATER);
+              stoneBoxes.add(new Box(BoxType.STONE, new Vector2(box.getObject().getX(), box.getObject().getY()), SPRITE_SIZE, SPRITE_SIZE));
+            }
+          boxes.addAll(stoneBoxes);
+          shovelTime = runTime;
+          break;
+        case STAR:
+          if (!player.getTankLevel().equals(TankLevel.LEVEL4)) {
+            player.setTankLevel(player.getTankLevel().nextLevel());
+            player.getObject().setRegion(textureAtlas.findRegion(player.getTankLevel().getNameRegion()));
+          }
+          break;
+        case CLOCK:
+          for (Enemy enemy : enemies) {
+            enemy.setCanMove(false);
+            clock_stop = true;
+
+          }
+          stopTime = runTime;
+          break;
+      }
+      bonus = null;
     }
     player.update(delta);
   }
