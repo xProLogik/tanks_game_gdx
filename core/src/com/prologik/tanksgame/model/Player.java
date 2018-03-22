@@ -39,9 +39,4 @@ public class Player extends Tank{
   public void draw(SpriteBatch batch) {
     super.draw(batch);
   }
-
-  @Override
-  public void leftTheField() {
-    super.leftTheField();
-  }
 }

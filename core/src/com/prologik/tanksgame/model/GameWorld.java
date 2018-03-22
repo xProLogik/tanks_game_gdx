@@ -11,7 +11,6 @@ import com.prologik.tanksgame.control.WorldRenderer;
 import com.prologik.tanksgame.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +20,7 @@ public class GameWorld implements Disposable {
 
   static TextureAtlas textureAtlas;
 
-  static final float SPRITE_SIZE = WorldRenderer.CAM_HEIGHT / 26;
+  static final float SPRITE_SIZE = WorldRenderer.CAM_HEIGHT / 26f;
   static final float PLAYFIELD_MIN_X = -13f * SPRITE_SIZE;
   static final float PLAYFIELD_MAX_X = 13f * SPRITE_SIZE;
   static final float PLAYFIELD_MIN_Y = -13f * SPRITE_SIZE;
@@ -33,13 +32,21 @@ public class GameWorld implements Disposable {
   private boolean clock_stop = false;
   private float stopTime;
   private float shovelTime;
+
   private ArrayList<Box> boxes = new ArrayList<>();
   private ArrayList<Box> removedBoxes = new ArrayList<>();
 
   private Array<String> bufferedEnemies = new Array<>();
   private Array<Enemy> enemies = new Array<>();
   private Array<Enemy> removedEnemies = new Array<>();
-  private Bonus bonus;
+
+  private Array<Vector2> placesRespawnEnemy = new Array<Vector2>() {{
+    add(new Vector2(PLAYFIELD_MIN_X, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE));
+    add(new Vector2((PLAYFIELD_MIN_X + PLAYFIELD_MAX_X) / 2 - 2 * SPRITE_SIZE, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE));
+    add(new Vector2(PLAYFIELD_MAX_X - 2 * SPRITE_SIZE, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE));
+  }};
+
+  private Bonus bonus = null;
 
   private WorldController contoller;
 
@@ -54,7 +61,6 @@ public class GameWorld implements Disposable {
     player = new Player(TankLevel.LEVEL1, new Vector2(0 - 4 * SPRITE_SIZE, PLAYFIELD_MIN_Y),
         2 * SPRITE_SIZE, 2 * SPRITE_SIZE, new Vector2(0f, 1f));
     player.getObject().setColor(Color.GOLD);
-    player.setCanMove(true);
     generatePlaylevel();
     generateEnemyForLevel();
   }
@@ -67,7 +73,7 @@ public class GameWorld implements Disposable {
 
       m = p.matcher(entry.getKey());
       String typeEnemy = "tank5";
-      if (m.find()) typeEnemy = "tank" + (Integer.parseInt(m.group()) + 4);
+      if (m.find()) typeEnemy = "tankenemy" + m.group();
       for (int i = 0; i < entry.getValue(); i++) {
         bufferedEnemies.add(typeEnemy);
       }
@@ -91,7 +97,7 @@ public class GameWorld implements Disposable {
 
   public void generateEnemy() {
     if (enemies.size < 5) {
-      Enemy newEnemy = new Enemy("tank5", new Vector2(-5f, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE),
+      Enemy newEnemy = new Enemy("tankenemy1", new Vector2(-5f, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE),
           2 * SPRITE_SIZE, 2 * SPRITE_SIZE, new Vector2(0f, -1f));
       enemies.add(newEnemy);
     }
@@ -99,9 +105,9 @@ public class GameWorld implements Disposable {
 
   public void createEnemy() {
     if (enemies.size < 5) {
-      Enemy newEnemy = new Enemy("tank5", new Vector2(-5f, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE),
+      Enemy newEnemy = new Enemy("tankenemy1", new Vector2(-5f, PLAYFIELD_MAX_Y - 2 * SPRITE_SIZE),
           2 * SPRITE_SIZE, 2 * SPRITE_SIZE, new Vector2(0f, -1f));
-      if (!clock_stop) newEnemy.setCanMove(true);
+      //if (!clock_stop) newEnemy.setCanMove(true);
       enemies.add(newEnemy);
 
     }
@@ -126,7 +132,6 @@ public class GameWorld implements Disposable {
 
   public void update(float delta, float runTime) {
     updateBonus(runTime);
-    updateTanks();
     updateEnemies(delta);
     updateBlocks();
     updateShots(delta, player);
@@ -141,14 +146,14 @@ public class GameWorld implements Disposable {
   private void updateBonus(float runTime) {
     if (runTime - shovelTime > 6) {
       for (Box box : boxes)
-        if ((-2 * SPRITE_SIZE <= box.getObject().getX()) && (1 * SPRITE_SIZE >= box.getObject().getX()) &&
-            (-13 * SPRITE_SIZE <= box.getObject().getY()) && (-11 >= box.getObject().getY()) &&
+        if ((-2 * SPRITE_SIZE <= box.getBounds().getX()) && (1 * SPRITE_SIZE >= box.getBounds().getX()) &&
+            (-13 * SPRITE_SIZE <= box.getBounds().getY()) && (-11 >= box.getBounds().getY()) &&
             (box.getBoxType().equals(BoxType.STONE))) box.blink(runTime);
     }
     if (runTime - shovelTime > 10) {
       for (Box box : boxes)
-        if ((-2 * SPRITE_SIZE <= box.getObject().getX()) && (1 * SPRITE_SIZE >= box.getObject().getX()) &&
-            (-13 * SPRITE_SIZE <= box.getObject().getY()) && (-11 >= box.getObject().getY())) {
+        if ((-2 * SPRITE_SIZE <= box.getBounds().getX()) && (1 * SPRITE_SIZE >= box.getBounds().getX()) &&
+            (-13 * SPRITE_SIZE <= box.getBounds().getY()) && (-11 >= box.getBounds().getY())) {
           if (box.getBoxType().equals(BoxType.STONE))
             removedBoxes.add(box);
           if (box.getBoxType().equals(BoxType.WATER))
@@ -162,34 +167,13 @@ public class GameWorld implements Disposable {
         enemy.blink(runTime);
     }
     if ((clock_stop) && (runTime - stopTime > 10)) {
-        clock_stop = false;
-        for (Enemy enemy : enemies)
-          enemy.getObject().setAlpha(1);
+      clock_stop = false;
+      for (Enemy enemy : enemies)
+        enemy.getObject().setAlpha(1);
     }
     if (bonus != null) bonus.update(runTime);
   }
 
-
-  private void updateTanks() {
-
-    Array<Tank> collideEnemies = new Array<>(enemies);
-    collideEnemies.add(player);
-
-    for (Tank tank : enemies) {
-      for (Tank tankCollide : collideEnemies)
-        if (!(tankCollide.equals(tank)))
-          if (tankCollide.collide(tank)) {
-            tankCollide.lastPosition();
-            tank.lastPosition();
-            if (!clock_stop) {
-              if (!tank.equals(player))
-                ((Enemy) tank).randomMove();
-              if (!tankCollide.equals(player))
-                ((Enemy) tankCollide).randomMove();
-            }
-          }
-    }
-  }
 
   private void updateBullets(Enemy enemy) {
     enemy.removedBullets.clear();
@@ -212,18 +196,22 @@ public class GameWorld implements Disposable {
   }
 
   private void updateEnemies(float delta) {
+
+    Array<Tank> collideEnemies = new Array<>(enemies);
+    collideEnemies.add(player);
+
     removedEnemies.clear();
     for (Enemy tankEnemy : enemies) {
       if (!clock_stop) {
         tankEnemy.randomMovement();
-        tankEnemy.setCanMove(true);
+        tankEnemy.move(delta);
       }
-      tankEnemy.move(delta);
 
       for (Box box : boxes) {
         if (tankEnemy.collide(box)) {
-          if (!clock_stop) tankEnemy.randomMove();
-          tankEnemy.lastPosition();
+          tankEnemy.setCanMove(false);
+          if (!clock_stop)
+            tankEnemy.randomMove();
         }
       }
       for (Bullet bullet : player.bullets) {
@@ -234,6 +222,17 @@ public class GameWorld implements Disposable {
           player.bullets.removeAll(player.removedBullets, false);
         }
       }
+      for (Tank tankCollide : collideEnemies)
+        if (!(tankCollide.equals(tankEnemy)))
+          if (tankCollide.collide(tankEnemy) || tankEnemy.collide(tankCollide)) {
+            tankEnemy.setCanMove(false);
+            tankCollide.setCanMove(false);
+            if (!clock_stop) {
+              tankEnemy.randomMove();
+              if (!tankCollide.equals(player))
+                ((Enemy) tankCollide).randomMove();
+            }
+          }
       tankEnemy.update(delta);
     }
     enemies.removeAll(removedEnemies, false);
@@ -247,7 +246,7 @@ public class GameWorld implements Disposable {
   private void updatePlayer(float delta, float runTime) {
     for (Box box : boxes) {
       if (player.collide(box)) {
-        player.lastPosition();
+        player.setCanMove(false);
       }
     }
     if ((bonus != null) && (player.collide(bonus))) {
@@ -265,11 +264,11 @@ public class GameWorld implements Disposable {
         case SHOVEL:
           ArrayList<Box> stoneBoxes = new ArrayList<>();
           for (Box box : boxes)
-            if ((-2 * SPRITE_SIZE <= box.getObject().getX()) && (1 * SPRITE_SIZE >= box.getObject().getX()) &&
-                (-13 * SPRITE_SIZE <= box.getObject().getY()) && (-11 >= box.getObject().getY()) &&
+            if ((-2 * SPRITE_SIZE <= box.getBounds().getX()) && (1 * SPRITE_SIZE >= box.getBounds().getX()) &&
+                (-13 * SPRITE_SIZE <= box.getBounds().getY()) && (-11 >= box.getBounds().getY()) &&
                 (box.getBoxType().equals(BoxType.BRICS))) {
               box.setBoxType(BoxType.WATER);
-              stoneBoxes.add(new Box(BoxType.STONE, new Vector2(box.getObject().getX(), box.getObject().getY()), SPRITE_SIZE, SPRITE_SIZE));
+              stoneBoxes.add(new Box(BoxType.STONE, new Vector2(box.getBounds().getX(), box.getBounds().getY()), SPRITE_SIZE, SPRITE_SIZE));
             }
           boxes.addAll(stoneBoxes);
           shovelTime = runTime;
@@ -284,7 +283,7 @@ public class GameWorld implements Disposable {
           for (Enemy enemy : enemies) {
             enemy.setCanMove(false);
             clock_stop = true;
-
+            enemy.update(delta);
           }
           stopTime = runTime;
           break;
@@ -297,7 +296,6 @@ public class GameWorld implements Disposable {
   private void updateShots(float delta, Tank tank) {
     tank.removedBullets.clear();
     for (Bullet bullet : tank.bullets) {
-      bullet.setCanMove(true);
       bullet.move(delta);
       if (bullet.isCanMove()) {
         for (Box box : boxes) {

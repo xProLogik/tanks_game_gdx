@@ -13,23 +13,33 @@ public abstract class MovableObject extends GameObject {
   private float velocity;
   private boolean canMove = false;
   Vector2 direction;
-  Vector2 position;
+  private Vector2 newPosition = position;
+
 
   MovableObject(String nameRegion, Vector2 position, float width, float height, Vector2 direction, float velosity) {
-    super(nameRegion,0, position, width, height);
+    super(nameRegion, 0, position, width, height);
     this.direction = direction;
     this.velocity = velosity;
-    this.position = position;
     recalculateRotationAngle(this.direction);
   }
 
-
   public void update(float delta) {
+
+    if (isLeftTheField())
+      leftTheField();
+
     if (isCanMove()) {
-      this.getObject().setPosition(this.position.x, this.position.y);
+      position = newPosition;
     }
-    this.getObject().setRotation(currentFacing);
+    this.getBounds().setPosition(this.position.x, this.position.y);
+    this.getBounds().setRotation(currentFacing);
+
   }
+
+  void leftTheField() {
+    setCanMove(false);
+  }
+
 
   void recalculateRotationAngle(Vector2 direction) {
     if (direction.x > 0.0f)
@@ -43,6 +53,8 @@ public abstract class MovableObject extends GameObject {
   }
 
   void setDirection(Vector2 direction) {
+    if (!this.direction.epsilonEquals(direction))
+      lastPosition();
     this.direction = direction;
     recalculateRotationAngle(direction);
   }
@@ -56,34 +68,29 @@ public abstract class MovableObject extends GameObject {
   }
 
   void move(float delta) {
-    if (isCanMove()) {
-      this.position.x += delta * velocity * direction.x;
-      this.position.y += delta * velocity * direction.y;
-      canMove = true;
-    }
+    newPosition = new Vector2(position);
+    newPosition.x = this.position.x + delta * velocity * direction.x;
+    newPosition.y = this.position.y + delta * velocity * direction.y;
+    canMove = true;
 
-    if (isLeftTheField()) this.leftTheField();
   }
 
-  public void leftTheField() {
-    lastPosition();
-  }
 
   public boolean isLeftTheField() {
-    return ((GameWorld.PLAYFIELD_MIN_Y > this.position.y) ||
-        (GameWorld.PLAYFIELD_MIN_X > this.position.x) ||
-        (GameWorld.PLAYFIELD_MAX_X < this.position.x + this.getBounds().getWidth()) ||
-        (GameWorld.PLAYFIELD_MAX_Y < this.position.y + this.getBounds().getHeight()));
+    return (getCollisionRect().x < GameWorld.PLAYFIELD_MIN_X || getCollisionRect().y < GameWorld.PLAYFIELD_MIN_Y ||
+        getCollisionRect().x + getCollisionRect().width > GameWorld.PLAYFIELD_MAX_X ||
+        getCollisionRect().y + getCollisionRect().height > GameWorld.PLAYFIELD_MAX_Y);
   }
-
 
   boolean collide(GameObject obj) {
-    Rectangle bounds = obj.getBounds();
-    return ((this.position.x < bounds.getX() + bounds.getWidth()) &&
-        (bounds.getX() < this.position.x + this.getBounds().getWidth()) &&
-        (this.position.y < bounds.getY() + bounds.getHeight()) &&
-        (bounds.getY() < this.position.y + this.getBounds().getHeight()));
+    Rectangle boundsObj = obj.getCollisionRect();
+    Rectangle boundsThis = this.getCollisionRect();
+    return ((newPosition.x < boundsObj.x + boundsObj.width) &&
+        (boundsObj.x < newPosition.x + boundsThis.width) &&
+        (newPosition.y < boundsObj.y + boundsObj.height) &&
+        (boundsObj.y < newPosition.y + boundsThis.height));
   }
+
 
   boolean collide(Box box) {
     return ((box.getBoxType().equals(BoxType.BRICS) ||
@@ -91,8 +98,30 @@ public abstract class MovableObject extends GameObject {
         box.getBoxType().equals(BoxType.WATER))) && this.collide((GameObject) box);
   }
 
-  void lastPosition() {
+  private void lastPosition() {
+
     this.position.x = Math.round(this.position.x);
     this.position.y = Math.round(this.position.y);
+  }
+
+  @Override
+  public Rectangle getCollisionRect() {
+
+    switch (this.currentFacing) {
+      case RIGHT:
+        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
+            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
+      case LEFT:
+        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
+            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
+      case UP:
+        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
+            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
+      case DOWN:
+        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
+            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
+      default:
+        return null;
+    }
   }
 }

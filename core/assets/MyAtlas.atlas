@@ -249,56 +249,56 @@ tank4
   orig: 16, 16
   offset: 0, 0
   index: 0
-tank5
+tankenemy1
   rotate: false
   xy: 80, 10
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-tank5
+tankenemy1
   rotate: false
   xy: 116, 10
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 0
-tank6
+tankenemy2
   rotate: false
   xy: 70, 46
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 0
-tank6
+tankenemy2
   rotate: false
   xy: 196, 46
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-tank7
+tankenemy3
   rotate: false
   xy: 142, 28
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
-tank7
+tankenemy3
   rotate: false
   xy: 232, 28
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 0
-tank8
+tankenemy4
   rotate: false
   xy: 20, 12
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 0
-tank8
+tankenemy4
   rotate: false
   xy: 142, 46
   size: 16, 16
