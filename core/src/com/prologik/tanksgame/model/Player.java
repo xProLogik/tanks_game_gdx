@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.prologik.tanksgame.control.PlayerContoller;
 
-public class Player extends Tank{
+public class Player extends Tank {
 
   private TankLevel tankLevel;
   private PlayerContoller contoller;
 
-  Player(TankLevel tankLevel, Vector2 position, float width, float height, Vector2 direction) {
-    super(tankLevel.getNameRegion(), position, width, height, direction,10f*GameWorld.SPRITE_SIZE);
+  Player(TankLevel tankLevel, Vector2 position) {
+    super(tankLevel.getNameRegion(), position, new Vector2(0, 1), 10f * GameWorld.SPRITE_SIZE);
     contoller = new PlayerContoller(this);
     this.tankLevel = tankLevel;
   }

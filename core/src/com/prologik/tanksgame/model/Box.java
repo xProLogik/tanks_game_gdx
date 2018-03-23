@@ -8,8 +8,8 @@ class Box extends GameObject {
 
   private BoxType boxType;
 
-  Box(BoxType boxType, Vector2 position, float width, float height) {
-    super(boxType.name().toLowerCase(), 0, position, width, height);
+  Box(BoxType boxType, Vector2 position) {
+    super(boxType.name().toLowerCase(), 0, position, GameWorld.SPRITE_SIZE,GameWorld.SPRITE_SIZE);
     this.boxType = boxType;
   }
 

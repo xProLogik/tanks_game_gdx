@@ -90,12 +90,9 @@ public abstract class MovableObject extends GameObject {
         (newPosition.y < boundsObj.y + boundsObj.height) &&
         (boundsObj.y < newPosition.y + boundsThis.height));
   }
-
-
   boolean collide(Box box) {
     return ((box.getBoxType().equals(BoxType.BRICS) ||
-        box.getBoxType().equals(BoxType.STONE) ||
-        box.getBoxType().equals(BoxType.WATER))) && this.collide((GameObject) box);
+        box.getBoxType().equals(BoxType.STONE))) && this.collide((GameObject) box);
   }
 
   private void lastPosition() {

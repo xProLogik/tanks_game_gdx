@@ -10,10 +10,9 @@ public abstract class Tank extends MovableObject {
   Array<Bullet> bullets = new Array<>();
   Array<Bullet> removedBullets = new Array<>();
 
-  Tank(String nameRegion, Vector2 position, float width, float height, Vector2 direction, float velocity) {
-    super(nameRegion, position, width, height, direction, velocity);
+  Tank(String nameRegion, Vector2 position, Vector2 direction, float velocity) {
+    super(nameRegion, position, 2 * GameWorld.SPRITE_SIZE, 2 * GameWorld.SPRITE_SIZE, direction, velocity);
   }
-
 
 
   @Override
@@ -31,9 +30,9 @@ public abstract class Tank extends MovableObject {
 
   public void shot() {
     Vector2 direction = new Vector2(this.direction);
-    if (bullets.size<2) {
-      Bullet newBullet = new Bullet("bullet_top", new Vector2(this.getBounds().getX() + GameWorld.SPRITE_SIZE/2,
-          this.getBounds().getY() + GameWorld.SPRITE_SIZE/2), GameWorld.SPRITE_SIZE, GameWorld.SPRITE_SIZE, direction);
+    if (bullets.size < 2) {
+      Bullet newBullet = new Bullet("bullet_top", new Vector2(this.getBounds().getX() + GameWorld.SPRITE_SIZE / 2,
+          this.getBounds().getY() + GameWorld.SPRITE_SIZE / 2), GameWorld.SPRITE_SIZE, GameWorld.SPRITE_SIZE, direction);
       bullets.add(newBullet);
     }
   }

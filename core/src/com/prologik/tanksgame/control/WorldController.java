@@ -15,7 +15,7 @@ public class WorldController {
   }
 
   public void update(float delta) {
-    if (Gdx.input.isKeyJustPressed(Input.Keys.R))
-      world.createEnemy();
+//    if (Gdx.input.isKeyJustPressed(Input.Keys.R))
+//      world.createEnemy();
   }
 }

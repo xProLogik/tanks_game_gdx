@@ -5,7 +5,7 @@ public enum BoxType {
 
 
 
-  public static BoxType typeByNumber(int number){
+  static BoxType typeByNumber(int number){
     BoxType[] types = values();
     return types[number];
 

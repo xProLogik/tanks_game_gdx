@@ -12,5 +12,9 @@ public enum TankLevel {
   String getNameRegion(){
     return this.name().replace("LEVEL","tank");
   }
+  static TankLevel typeByNumber(int number){
+    TankLevel[] types = values();
+    return types[number-1];
 
+  }
 }

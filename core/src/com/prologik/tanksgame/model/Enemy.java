@@ -7,8 +7,9 @@ public class Enemy extends Tank {
 
   private int random;
 
-  Enemy(String nameRegion, Vector2 position, float width, float height, Vector2 direction) {
-    super(nameRegion, position, width, height, direction, 10f * GameWorld.SPRITE_SIZE);
+  Enemy(TankLevel tankLevel, Vector2 position) {
+    super(tankLevel.getNameRegion().replace("tank","tankenemy"), position, new Vector2(0,-1),
+        10f * GameWorld.SPRITE_SIZE);
   }
 
   void randomMove(){

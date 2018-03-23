@@ -7,8 +7,8 @@ public class Bonus extends GameObject {
 
   private BonusType bonusType;
 
-  Bonus(String nameRegion,int indexRegion, Vector2 position, float width, float height) {
-    super(nameRegion,indexRegion, position, width, height);
+  Bonus(String nameRegion, int indexRegion, Vector2 position) {
+    super(nameRegion, indexRegion, position, 2 * GameWorld.SPRITE_SIZE, 2 * GameWorld.SPRITE_SIZE);
     this.bonusType = BonusType.typeByNumber(indexRegion);
   }
 

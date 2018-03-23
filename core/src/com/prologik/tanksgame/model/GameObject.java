@@ -23,8 +23,8 @@ public abstract class GameObject {
     bounds.setOrigin(width / 2, height / 2);
     bounds.setPosition(position.x, position.y);
 
-    object = new Sprite(GameWorld.textureAtlas.findRegion(nameRegion));
-    object.setSize(width, height);
+    object = new Sprite(GameWorld.textureAtlas.findRegion(nameRegion, indexRegion));
+    object.setSize(width * 1.06f, height * 1.06f);
     object.setOrigin(width / 2, height / 2);
     this.position = position;
 
