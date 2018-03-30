@@ -10,10 +10,10 @@ import com.prologik.tanksgame.view.Screens;
 public class MainGame extends Game {
   private FPSLogger fpsLogger;
 
-
   public void create() {
     ScreenManager.getInstance().initialize(this);
     ScreenManager.getInstance().show(Screens.GAME);
+
     fpsLogger = new FPSLogger();
   }
 

@@ -1,17 +1,31 @@
 package com.prologik.tanksgame.model;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import com.badlogic.gdx.math.Vector2;
 
 class Box extends GameObject {
 
-
+  Animation waterAnimation;
+  private TextureRegion water1, water2, water3;
   private BoxType boxType;
 
   Box(BoxType boxType, Vector2 position) {
-    super(boxType.name().toLowerCase(), 0, position, GameWorld.SPRITE_SIZE,GameWorld.SPRITE_SIZE);
+    super(boxType.name().toLowerCase(), 0, position, GameWorld.SPRITE_SIZE, GameWorld.SPRITE_SIZE);
     this.boxType = boxType;
+    this.getObject().setSize(this.getObject().getWidth()*1.0f,this.getObject().getHeight()*1.05f);
+    if (this.boxType.equals(BoxType.WATER)) {
+      water1 = GameWorld.textureAtlas.findRegion("water", 0);
+      water2 = GameWorld.textureAtlas.findRegion("water", 1);
+      water3 = GameWorld.textureAtlas.findRegion("water", 2);
+      TextureRegion[] waterFrames = {water1,water2,water3};
+      waterAnimation = new Animation<>(0.5f,waterFrames);
+      waterAnimation.setPlayMode(Animation.PlayMode.LOOP);
+    }
   }
+
 
   BoxType getBoxType() {
     return boxType;
@@ -23,7 +37,8 @@ class Box extends GameObject {
 
   @Override
   public void draw(SpriteBatch batch) {
-    super.draw(batch);
+      super.draw(batch);
+
   }
 
   boolean changeBox(Vector2 direction) {
@@ -53,7 +68,7 @@ class Box extends GameObject {
       changeHeight = GameWorld.SPRITE_SIZE / 2f;
     }
     this.getObject().setRegion(this.getObject(), x, y, width, height);
-    this.getObject().setSize(this.getObject().getWidth() - changeWidth,this.getObject().getHeight() - changeHeight);
+    this.getObject().setSize(this.getObject().getWidth() - changeWidth, this.getObject().getHeight() - changeHeight);
     if (width < PIXEL_SIZE_SPRITE / 2 || height < PIXEL_SIZE_SPRITE / 2) result = true;
 
 

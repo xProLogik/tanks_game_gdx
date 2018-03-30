@@ -1,5 +1,7 @@
 package com.prologik.tanksgame.model;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
@@ -15,6 +17,7 @@ public abstract class GameObject {
   private float koeffDrawY = 0;
 
   Vector2 position;
+  int indexRegion;
 
   static int PIXEL_SIZE_SPRITE = 8;
 
@@ -24,11 +27,12 @@ public abstract class GameObject {
     bounds.setPosition(position.x, position.y);
 
     object = new Sprite(GameWorld.textureAtlas.findRegion(nameRegion, indexRegion));
-    object.setSize(width * 1.06f, height * 1.06f);
+    object.setSize(width, height);
     object.setOrigin(width / 2, height / 2);
     this.position = position;
-
+    this.indexRegion = indexRegion;
   }
+
 
   public void draw(SpriteBatch batch) {
     setFlip();
@@ -66,7 +70,7 @@ public abstract class GameObject {
     this.koeffDrawY = koeffDrawY;
   }
 
-  public Rectangle getCollisionRect() {
+  Rectangle getCollisionRect() {
     return this.bounds.getBoundingRectangle();
   }
 }

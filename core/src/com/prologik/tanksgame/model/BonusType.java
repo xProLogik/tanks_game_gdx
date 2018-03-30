@@ -6,6 +6,5 @@ public enum BonusType {
   public static BonusType typeByNumber(int number){
     BonusType[] types = values();
     return types[number];
-
   }
 }

@@ -1,28 +1,43 @@
 package com.prologik.tanksgame.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bullet extends MovableObject {
 
 
-  Bullet(String nameRegion, Vector2 position, float width, float height, Vector2 direction) {
-    super(nameRegion, position, width, height, direction, 15f * GameWorld.SPRITE_SIZE);
+  Bullet(Vector2 position, Vector2 direction) {
+    super("bullet", position, GameWorld.SPRITE_SIZE,
+        GameWorld.SPRITE_SIZE, direction, 15f);
   }
 
 
   @Override
   public boolean isLeftTheField() {
-    return (getCollisionRect().x + GameWorld.SPRITE_SIZE / 2 < GameWorld.PLAYFIELD_MIN_X ||
-        getCollisionRect().y + GameWorld.SPRITE_SIZE / 2 < GameWorld.PLAYFIELD_MIN_Y ||
-        getCollisionRect().x + getCollisionRect().width - GameWorld.SPRITE_SIZE / 2 > GameWorld.PLAYFIELD_MAX_X ||
-        getCollisionRect().y + getCollisionRect().height - GameWorld.SPRITE_SIZE / 2 > GameWorld.PLAYFIELD_MAX_Y);
+    return (getCollisionRect().x < GameWorld.PLAYFIELD_MIN_X ||
+        getCollisionRect().y < GameWorld.PLAYFIELD_MIN_Y ||
+        getCollisionRect().x + getCollisionRect().width > GameWorld.PLAYFIELD_MAX_X ||
+        getCollisionRect().y + getCollisionRect().height > GameWorld.PLAYFIELD_MAX_Y);
+  }
+
+  @Override
+  void leftTheField() {
+    super.leftTheField();
+    GameWorld.createSmallExploison(this);
+  }
+
+  @Override
+  boolean collide(Box box) {
+    return ((box.getBoxType().equals(BoxType.BRICS) ||
+        box.getBoxType().equals(BoxType.STONE))) && this.collide((GameObject) box);
   }
 
   @Override
   public void update(float delta) {
     super.update(delta);
   }
+
 
   @Override
   public void draw(SpriteBatch batch) {

@@ -15,7 +15,15 @@ public class WorldController {
   }
 
   public void update(float delta) {
-//    if (Gdx.input.isKeyJustPressed(Input.Keys.R))
-//      world.createEnemy();
+    if (Gdx.input.isKeyJustPressed(Input.Keys.P))
+      if (world.isPause()) {
+        world.setPause(false);
+        world.objectPauses.clear();
+        GameWorld.sounds.forEach((name, sound) -> sound.resume());
+      } else {
+        world.setPause(true);
+        world.createWindowPause();
+        GameWorld.sounds.forEach((name, sound) -> sound.pause());
+      }
   }
 }

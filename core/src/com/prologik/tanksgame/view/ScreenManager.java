@@ -2,16 +2,18 @@ package com.prologik.tanksgame.view;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IntMap;
 
-public class ScreenManager {
+public class ScreenManager implements Disposable {
+
   private static ScreenManager instance;
 
   private Game game;
 
   private IntMap<Screen> screensMap;
 
-  public ScreenManager() {
+  private ScreenManager() {
     screensMap = new IntMap<>();
   }
 

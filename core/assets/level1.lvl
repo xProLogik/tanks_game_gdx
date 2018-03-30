@@ -24,7 +24,7 @@
 0 0 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0 0 1 1 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-EnemyTankLevel_1 8
-EnemyTankLevel_2 6
-EnemyTankLevel_3 4
-EnemyTankLevel_4 2
+EnemyTankLevel_4 10
+EnemyTankLevel_3 10
+EnemyTankLevel_2 10
+EnemyTankLevel_1 10

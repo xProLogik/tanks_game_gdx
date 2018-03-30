@@ -68,9 +68,16 @@ public abstract class MovableObject extends GameObject {
   }
 
   void move(float delta) {
+
     newPosition = new Vector2(position);
-    newPosition.x = this.position.x + delta * velocity * direction.x;
-    newPosition.y = this.position.y + delta * velocity * direction.y;
+    if (delta < 0.04) {
+      newPosition.x = this.position.x + delta * velocity * direction.x;
+      newPosition.y = this.position.y + delta * velocity * direction.y;
+    } else {
+      newPosition.x = this.position.x + 0.04f * velocity * direction.x;
+      newPosition.y = this.position.y + 0.04f * velocity * direction.y;
+    }
+
     canMove = true;
 
   }
@@ -90,35 +97,25 @@ public abstract class MovableObject extends GameObject {
         (newPosition.y < boundsObj.y + boundsObj.height) &&
         (boundsObj.y < newPosition.y + boundsThis.height));
   }
+
   boolean collide(Box box) {
-    return ((box.getBoxType().equals(BoxType.BRICS) ||
-        box.getBoxType().equals(BoxType.STONE))) && this.collide((GameObject) box);
+    return (box.getBoxType().equals(BoxType.BRICS) ||
+        box.getBoxType().equals(BoxType.STONE) ||
+        box.getBoxType().equals(BoxType.WATER)) && this.collide((GameObject) box);
   }
 
-  private void lastPosition() {
+  void lastPosition() {
 
     this.position.x = Math.round(this.position.x);
     this.position.y = Math.round(this.position.y);
   }
 
-  @Override
-  public Rectangle getCollisionRect() {
-
-    switch (this.currentFacing) {
-      case RIGHT:
-        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
-            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
-      case LEFT:
-        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
-            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
-      case UP:
-        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
-            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
-      case DOWN:
-        return new Rectangle(this.getBounds().getX(), this.getBounds().getY(),
-            this.getBounds().getBoundingRectangle().width, this.getBounds().getBoundingRectangle().height);
-      default:
-        return null;
-    }
+  float getVelocity() {
+    return velocity;
   }
+
+  void setVelocity(float velocity) {
+    this.velocity = velocity;
+  }
+
 }
