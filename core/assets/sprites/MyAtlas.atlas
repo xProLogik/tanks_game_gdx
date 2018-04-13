@@ -1,0 +1,482 @@
+
+MyAtlas.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+100points
+  rotate: false
+  xy: 842, 828
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: 0
+1player
+  rotate: false
+  xy: 848, 838
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: 0
+200points
+  rotate: false
+  xy: 438, 398
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: 0
+2player
+  rotate: false
+  xy: 994, 968
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: 0
+300points
+  rotate: false
+  xy: 988, 958
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: 0
+400points
+  rotate: false
+  xy: 36, 72
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: 0
+500points
+  rotate: false
+  xy: 404, 328
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: 0
+alive
+  rotate: false
+  xy: 824, 802
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+bgmainmenu
+  rotate: false
+  xy: 2, 100
+  size: 256, 224
+  orig: 256, 224
+  offset: 0, 0
+  index: -1
+bonus
+  rotate: false
+  xy: 806, 802
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+bonus
+  rotate: false
+  xy: 824, 820
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+bonus
+  rotate: false
+  xy: 952, 932
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+bonus
+  rotate: false
+  xy: 970, 950
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+bonus
+  rotate: false
+  xy: 404, 338
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 5
+bonus
+  rotate: false
+  xy: 952, 914
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 3
+brics
+  rotate: false
+  xy: 90, 90
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+bullet
+  rotate: false
+  xy: 824, 792
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+cursor
+  rotate: false
+  xy: 260, 254
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+dead
+  rotate: false
+  xy: 404, 356
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+empty
+  rotate: false
+  xy: 278, 262
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+exploison
+  rotate: false
+  xy: 404, 392
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+exploison
+  rotate: false
+  xy: 2, 66
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+exploison
+  rotate: false
+  xy: 404, 374
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+exploison
+  rotate: false
+  xy: 438, 408
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+exploison
+  rotate: false
+  xy: 2, 48
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+flag
+  rotate: false
+  xy: 278, 290
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+gameover
+  rotate: false
+  xy: 260, 308
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: 0
+grass
+  rotate: false
+  xy: 2, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+ice
+  rotate: false
+  xy: 296, 280
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+number
+  rotate: false
+  xy: 314, 298
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 5
+number
+  rotate: false
+  xy: 952, 904
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+number
+  rotate: false
+  xy: 970, 922
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
+number
+  rotate: false
+  xy: 866, 838
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 2
+number
+  rotate: false
+  xy: 1012, 968
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 3
+number
+  rotate: false
+  xy: 456, 398
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 4
+number
+  rotate: false
+  xy: 54, 72
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 6
+number
+  rotate: false
+  xy: 842, 818
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 7
+number
+  rotate: false
+  xy: 860, 828
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 8
+number
+  rotate: false
+  xy: 988, 948
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 9
+outline
+  rotate: false
+  xy: 806, 820
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+outline
+  rotate: false
+  xy: 952, 950
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+pause
+  rotate: false
+  xy: 806, 838
+  size: 40, 8
+  orig: 40, 8
+  offset: 0, 0
+  index: 0
+player1controll
+  rotate: false
+  xy: 404, 426
+  size: 400, 550
+  orig: 400, 550
+  offset: 0, 0
+  index: -1
+player2controll
+  rotate: false
+  xy: 2, 326
+  size: 400, 650
+  orig: 400, 650
+  offset: 0, 0
+  index: -1
+sprites
+  rotate: false
+  xy: 806, 848
+  size: 144, 128
+  orig: 144, 128
+  offset: 0, 0
+  index: -1
+stage
+  rotate: false
+  xy: 952, 968
+  size: 40, 8
+  orig: 40, 8
+  offset: 0, 0
+  index: 0
+stone
+  rotate: false
+  xy: 492, 416
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+tank1
+  rotate: false
+  xy: 2, 30
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tank1
+  rotate: false
+  xy: 54, 82
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tank2
+  rotate: false
+  xy: 278, 272
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tank2
+  rotate: false
+  xy: 296, 290
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tank3
+  rotate: false
+  xy: 456, 408
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tank3
+  rotate: false
+  xy: 260, 272
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tank4
+  rotate: false
+  xy: 330, 308
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tank4
+  rotate: false
+  xy: 806, 784
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tank_ico
+  rotate: false
+  xy: 422, 382
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+tank_ico
+  rotate: false
+  xy: 20, 56
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
+tankenemy1
+  rotate: false
+  xy: 36, 82
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tankenemy1
+  rotate: false
+  xy: 260, 290
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tankenemy2
+  rotate: false
+  xy: 474, 408
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tankenemy2
+  rotate: false
+  xy: 2, 12
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tankenemy3
+  rotate: false
+  xy: 294, 308
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tankenemy3
+  rotate: false
+  xy: 312, 308
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tankenemy4
+  rotate: false
+  xy: 72, 82
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+tankenemy4
+  rotate: false
+  xy: 970, 932
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+water
+  rotate: false
+  xy: 260, 244
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+water
+  rotate: false
+  xy: 348, 316
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
+water
+  rotate: false
+  xy: 806, 774
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 2
