@@ -1,49 +1,37 @@
 package com.prologik.tanksgame.view;
 
-import com.prologik.tanksgame.control.WorldRenderer;
-import com.prologik.tanksgame.model.GameWorld;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.prologik.tanksgame.MainGame;
+import com.prologik.tanksgame.control.gameworld.WorldController;
+import com.prologik.tanksgame.model.gameworld.GameWorld;
 
 
 public class GameScreen extends AbstractScreen {
-
-
-  private final GameWorld world;
-  private final WorldRenderer renderer;
+  private static GameWorld world;
+  private final WorldController controller;
   private float runTime = 0;
 
-  private boolean isDone = false;
 
-  GameScreen() {
-    world = new GameWorld();
-    renderer = new WorldRenderer();
+  public GameScreen(MainGame game, int countPlayer, String nameLevel) {
+    super(game);
+    world = new GameWorld(game, countPlayer, nameLevel);
+    controller = new WorldController(world);
   }
+
 
   @Override
   public void dispose() {
-    renderer.dispose();
     world.dispose();
   }
 
   @Override
-  public void resize(int width, int height) {
-    super.resize(width, height);
-    renderer.resize(width,height);
-  }
-
-  @Override
   public void update(float delta) {
-    runTime+=delta;
-    world.update(delta,runTime);
+    runTime += delta;
+    world.update(delta, runTime);
   }
 
   @Override
-  public void draw(float delta) {
-    renderer.render(world);
-  }
-
-
-  @Override
-  public boolean isDone() {
-    return isDone;
+  public void draw(SpriteBatch batch) {
+    controller.draw(batch);
   }
 }

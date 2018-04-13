@@ -1,7 +1,11 @@
-package com.prologik.tanksgame.model;
+package com.prologik.tanksgame.model.gameworld.movableobjects;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.prologik.tanksgame.model.gameworld.GameWorld;
+import com.prologik.tanksgame.model.gameworld.anotherobjects.Box;
+import com.prologik.tanksgame.model.gameworld.anotherobjects.BoxType;
+import com.prologik.tanksgame.model.gameworld.anotherobjects.GameObject;
 
 public abstract class MovableObject extends GameObject {
 
@@ -12,7 +16,7 @@ public abstract class MovableObject extends GameObject {
   int currentFacing;
   private float velocity;
   private boolean canMove = false;
-  Vector2 direction;
+  private Vector2 direction;
   private Vector2 newPosition = position;
 
 
@@ -24,11 +28,10 @@ public abstract class MovableObject extends GameObject {
   }
 
   public void update(float delta) {
+    if (this.isLeftTheField())
+      this.leftTheField();
 
-    if (isLeftTheField())
-      leftTheField();
-
-    if (isCanMove()) {
+    if (this.isCanMove()) {
       position = newPosition;
     }
     this.getBounds().setPosition(this.position.x, this.position.y);
@@ -59,11 +62,11 @@ public abstract class MovableObject extends GameObject {
     recalculateRotationAngle(direction);
   }
 
-  boolean isCanMove() {
+  public boolean isCanMove() {
     return canMove;
   }
 
-  void setCanMove(boolean canMove) {
+  public void setCanMove(boolean canMove) {
     this.canMove = canMove;
   }
 
@@ -78,7 +81,7 @@ public abstract class MovableObject extends GameObject {
       newPosition.y = this.position.y + 0.04f * velocity * direction.y;
     }
 
-    canMove = true;
+    this.canMove = true;
 
   }
 
@@ -89,7 +92,7 @@ public abstract class MovableObject extends GameObject {
         getCollisionRect().y + getCollisionRect().height > GameWorld.PLAYFIELD_MAX_Y);
   }
 
-  boolean collide(GameObject obj) {
+  public boolean collide(GameObject obj) {
     Rectangle boundsObj = obj.getCollisionRect();
     Rectangle boundsThis = this.getCollisionRect();
     return ((newPosition.x < boundsObj.x + boundsObj.width) &&
@@ -98,13 +101,13 @@ public abstract class MovableObject extends GameObject {
         (boundsObj.y < newPosition.y + boundsThis.height));
   }
 
-  boolean collide(Box box) {
+  public boolean collide(Box box) {
     return (box.getBoxType().equals(BoxType.BRICS) ||
         box.getBoxType().equals(BoxType.STONE) ||
         box.getBoxType().equals(BoxType.WATER)) && this.collide((GameObject) box);
   }
 
-  void lastPosition() {
+  public void lastPosition() {
 
     this.position.x = Math.round(this.position.x);
     this.position.y = Math.round(this.position.y);
@@ -118,4 +121,11 @@ public abstract class MovableObject extends GameObject {
     this.velocity = velocity;
   }
 
+  public Vector2 getDirection() {
+    return direction;
+  }
+
+  void setNewPosition(Vector2 newPosition) {
+    this.newPosition = newPosition;
+  }
 }

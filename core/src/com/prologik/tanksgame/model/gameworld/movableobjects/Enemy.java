@@ -1,7 +1,8 @@
-package com.prologik.tanksgame.model;
+package com.prologik.tanksgame.model.gameworld.movableobjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.prologik.tanksgame.model.gameworld.GameWorld;
 
 public class Enemy extends Tank {
 
@@ -11,21 +12,25 @@ public class Enemy extends Tank {
   private boolean bonusEnemy = false;
 
 
-  Enemy(TankLevel tankLevel, Vector2 position) {
+  public Enemy(TankLevel tankLevel, Vector2 position) {
     super(tankLevel.getNameRegion().replace("tank", "tankenemy"), position, new Vector2(0, -1),
-         1);
+        1);
     this.tankLevel = tankLevel;
-
-    if (tankLevel.equals(TankLevel.LEVEL4)) this.tankLife = 3;
-    if (tankLevel.equals(TankLevel.LEVEL2)) this.setVelocity(this.getVelocity()*4);
-    else this.setVelocity(this.getVelocity()*2);
+    if (tankLevel.equals(TankLevel.LEVEL4)) this.setTankLife(3);
+    if (tankLevel.equals(TankLevel.LEVEL2)) this.setVelocity(this.getVelocity() * 4);
+    else this.setVelocity(this.getVelocity() * 2);
+    if (Math.random() < .1) {
+      this.setBonusEnemy(true);
+      this.setColorBlink(true);
+    }
+    this.getObject().setAlpha(1);
   }
 
-  TankLevel getTankLevel() {
+  public TankLevel getTankLevel() {
     return tankLevel;
   }
 
-  void randomMove() {
+  public void randomMove() {
     if (Math.random() * 100 < 10)
       randomAngle();
   }
@@ -66,10 +71,10 @@ public class Enemy extends Tank {
           this.setDirection(new Vector2(1, 0));
         break;
     }
-    this.recalculateRotationAngle(this.direction);
+    this.recalculateRotationAngle(this.getDirection());
   }
 
-  void randomMovement() {
+  public void randomMovement() {
     if (Math.random() < .01) {
       randomAngle();
     }
@@ -96,20 +101,20 @@ public class Enemy extends Tank {
     return 1;
   }
 
-  void declineForLevel4() {
+  private void declineForLevel4() {
     this.setColorBlink(true);
 
   }
 
-  void setBonusEnemy(boolean bonusEnemy) {
+  private void setBonusEnemy(boolean bonusEnemy) {
     this.bonusEnemy = bonusEnemy;
   }
 
-  boolean isBonusEnemy() {
+  public boolean isBonusEnemy() {
     return bonusEnemy;
   }
 
-  boolean isColorBlink() {
+  public boolean isColorBlink() {
     return colorBlink;
   }
 
@@ -118,17 +123,33 @@ public class Enemy extends Tank {
     else getObject().setColor(1, 1, 1, 1);
   }
 
-  void setColorBlink(boolean colorBlink) {
+  private void setColorBlink(boolean colorBlink) {
     this.colorBlink = colorBlink;
   }
 
-  void enemyColorBlink(float runTime) {
+  public void enemyColorBlink(float runTime) {
     float[] color = new float[3];
     if (bonusEnemy) color = new float[]{0.6f, 0, 0.4f};
-    if (tankLife == 2) color = new float[]{1, 1, 0.2f};
-    if (tankLife == 1 && tankLevel.equals(TankLevel.LEVEL4)) color = new float[]{0.1f, 0.7f, 0.1f};
+    if (this.getTankLife() == 2) color = new float[]{1, 1, 0.2f};
+    if (this.getTankLife() == 1 && tankLevel.equals(TankLevel.LEVEL4)) color = new float[]{0.1f, 0.7f, 0.1f};
     colorBlink(runTime, color);
   }
 
+  public void hitTheTank(Tank tank, GameWorld world) {
+    if (this.isBonusEnemy()) {
+      world.createBonus();
+      this.setBonusEnemy(false);
+    }
+    this.setTankLife(this.getTankLife() - 1);
+    if (this.getTankLife() < 1) {
+      this.createExploison(world);
+      world.createPoints(this, 100 * (this.tankLevel.ordinal() + 1), (Player) tank);
+      world.removedEnemies.add(this);
+    }
+    if (this.getTankLevel().equals(TankLevel.LEVEL4)) {
+      GameWorld.sounds.get("enemylevel4").play(0.3f);
+      this.declineForLevel4();
+    }
+  }
 
 }

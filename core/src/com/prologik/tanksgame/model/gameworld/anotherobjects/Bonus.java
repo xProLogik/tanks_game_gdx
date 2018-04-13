@@ -1,19 +1,20 @@
-package com.prologik.tanksgame.model;
+package com.prologik.tanksgame.model.gameworld.anotherobjects;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.prologik.tanksgame.model.gameworld.GameWorld;
 
 public class Bonus extends GameObject {
 
   private BonusType bonusType;
   private float bonusTime = 15;
 
-  Bonus(Vector2 position) {
+  public Bonus(Vector2 position) {
     super("bonus", (int)(Math.random()*5), position, 2 * GameWorld.SPRITE_SIZE, 2 * GameWorld.SPRITE_SIZE);
-    this.bonusType = BonusType.typeByNumber(super.indexRegion);
+    this.bonusType = BonusType.values()[super.indexRegion];
+
   }
 
-  float getBonusTime() {
+  public float getBonusTime() {
     return bonusTime;
   }
 
@@ -23,12 +24,8 @@ public class Bonus extends GameObject {
   }
 
 
-  BonusType getBonusType() {
+  public BonusType getBonusType() {
     return bonusType;
   }
 
-  @Override
-  public void draw(SpriteBatch batch) {
-    super.draw(batch);
-  }
 }

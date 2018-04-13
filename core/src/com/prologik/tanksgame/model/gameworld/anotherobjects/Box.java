@@ -1,25 +1,26 @@
-package com.prologik.tanksgame.model;
+package com.prologik.tanksgame.model.gameworld.anotherobjects;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import com.badlogic.gdx.math.Vector2;
+import com.prologik.tanksgame.MainGame;
+import com.prologik.tanksgame.model.gameworld.GameWorld;
 
-class Box extends GameObject {
+public class Box extends GameObject {
 
   Animation waterAnimation;
   private TextureRegion water1, water2, water3;
   private BoxType boxType;
 
-  Box(BoxType boxType, Vector2 position) {
+  public Box(BoxType boxType, Vector2 position) {
     super(boxType.name().toLowerCase(), 0, position, GameWorld.SPRITE_SIZE, GameWorld.SPRITE_SIZE);
     this.boxType = boxType;
-    this.getObject().setSize(this.getObject().getWidth()*1.0f,this.getObject().getHeight()*1.05f);
+    this.getObject().setSize(this.getObject().getWidth()*1.05f,this.getObject().getHeight()*1.05f);
     if (this.boxType.equals(BoxType.WATER)) {
-      water1 = GameWorld.textureAtlas.findRegion("water", 0);
-      water2 = GameWorld.textureAtlas.findRegion("water", 1);
-      water3 = GameWorld.textureAtlas.findRegion("water", 2);
+      water1 = MainGame.sptriteAtlas.findRegion("water", 0);
+      water2 = MainGame.sptriteAtlas.findRegion("water", 1);
+      water3 = MainGame.sptriteAtlas.findRegion("water", 2);
       TextureRegion[] waterFrames = {water1,water2,water3};
       waterAnimation = new Animation<>(0.5f,waterFrames);
       waterAnimation.setPlayMode(Animation.PlayMode.LOOP);
@@ -27,7 +28,7 @@ class Box extends GameObject {
   }
 
 
-  BoxType getBoxType() {
+  public BoxType getBoxType() {
     return boxType;
   }
 
@@ -73,5 +74,9 @@ class Box extends GameObject {
 
 
     return result;
+  }
+
+  public void setPosition(Vector2 newPosition){
+    this.getBounds().setPosition(newPosition.x,newPosition.y);
   }
 }
